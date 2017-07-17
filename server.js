@@ -13,10 +13,15 @@ app.use(express.static('public'));
 let messages = [];
 let users = [];
 
+
 app.post('/messages', (req, res) => {
-    messages.push(req.body);
+    if(messages.length >= 100){
+        messages.push(req.body);
+        messages.shift();
+    }else{
+        messages.push(req.body);
+    }
     res.json(messages);
-    console.log(messages);
 });
 
 app.get('/messages', (req, res) => {
@@ -24,13 +29,31 @@ app.get('/messages', (req, res) => {
 });
 
 app.post('/users', (req, res) => {
-    users.push(req.body);
+    let user = req.body;
+    user.isTyping = false;
+    users.push(user);
+    res.json(users);
+});
+
+app.put('/users', (req, res) => {
+    let isTyping = req.body.isTyping;
+    let user = req.body.user;
+    users.map((el) => {
+        if(el.user === user){
+            el.isTyping = isTyping;
+        }
+    });
+    res.json(users);
+
+});
+
+app.get('/users', (req, res) => {
     res.json(users);
 });
 
 
 app.listen(3000, () => {
-    console.log("Serer is listening on port 3000");
+    console.log("Server is listening on port 3000");
 });
 
 
