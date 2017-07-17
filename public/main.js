@@ -9,7 +9,6 @@
     let history = [];
     let users = [];
     let renderedHistory = [];
-    let renderedUsers = [];
     let ajax = new XMLHttpRequest();
 
 
@@ -83,10 +82,14 @@
         if (history) {
             messageHistory.innerHTML = "";
             renderedHistory = history;
-            history.map((message) => {
+            history.map((el) => {
+                console.log(el);
                 let itemMessage = document.createElement("li");
+                if (checkForReceiver(el.message) === true){
+                    itemMessage.classList.add("special");
+                }
                 itemMessage.classList.add('itemMessage');
-                itemMessage.innerText = message.user + ' - ' + message.message;
+                itemMessage.innerText = el.user + ' - ' + el.message;
                 messageHistory.appendChild(itemMessage);
             });
         }
@@ -109,6 +112,14 @@
                 }
             }
         }
+    };
+
+    const checkForReceiver = (item) => {
+        let splittedMessage = item.split(" ");
+        let receiver = splittedMessage.filter((item) => {
+            return item.startsWith("@");
+        });
+        return !!receiver.length>0;
     };
 
 
