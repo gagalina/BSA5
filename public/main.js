@@ -1,11 +1,13 @@
 (() => {
-    const nameInput = document.querySelector('.nameInput');
+    let nameInput = document.querySelector('.nameInput');
+    let nickNameInput = document.querySelector('.nickNameInput');
     const signUpBtn = document.querySelector('.signUpBtn');
     const messageField = document.querySelector('.messageField');
     const sendMessageBtn = document.querySelector('.sendMessageBtn');
     let userName = document.querySelector('.userName');
     let messageHistory = document.querySelector('.messageHistory');
     let userIsTyping = document.querySelector('.userIsTyping');
+    let modalWindow = document.querySelector('.modalWindow');
     let history = [];
     let users = [];
     let renderedHistory = [];
@@ -15,16 +17,17 @@
     userName.innerText = "User Name";
 
     signUpBtn.addEventListener('click', () => {
-        nameInput.value ? (userName.innerText = nameInput.value ) : "User Name";
+        nameInput.value ? (userName.innerText = nickNameInput.value) : "User Name";
         ajax.open('POST', '/users', true);
         ajax.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        ajax.send("user=" + nameInput.value);
+        ajax.send("user=" + nickNameInput.value);
         ajax.onreadystatechange = () => {
             if (ajax.readyState === XMLHttpRequest.DONE && ajax.status === 200) {
                 nameInput.value = '';
+                nickNameInput.value = '';
+                modalWindow.style.display = 'none';
             }
         }
-
     });
 
     sendMessageBtn.addEventListener('click', () => {
@@ -78,17 +81,18 @@
         };
     };
 
+
     const renderHistory = () => {
         if (history) {
             messageHistory.innerHTML = "";
             renderedHistory = history;
             history.map((el) => {
-                console.log(el);
                 let itemMessage = document.createElement("li");
                 if (checkForReceiver(el.message) === true){
                     itemMessage.classList.add("special");
+                    itemMessage.classList.add("well");
                 }
-                itemMessage.classList.add('itemMessage');
+                itemMessage.classList.add("well");
                 itemMessage.innerText = el.user + ' - ' + el.message;
                 messageHistory.appendChild(itemMessage);
             });
@@ -101,7 +105,6 @@
             let typingUsers = [];
             users.map((el) => {
                 if (el.isTyping === "true"){
-                    console.log("hh");
                     typingUsers.push(el.user);
                 }
             });
@@ -113,6 +116,7 @@
             }
         }
     };
+
 
     const checkForReceiver = (item) => {
         let splittedMessage = item.split(" ");
@@ -128,7 +132,20 @@
     setInterval(() => {
         getHistory();
 
-    }, 1000)
+    }, 1000);
+
+
+    // validate form
+    const validateForm = () => {
+        if(nameInput.value === "" || nickNameInput.value === ""){
+            signUpBtn.classList.add("disabled");
+        }else{
+            signUpBtn.classList.remove("disabled");
+        }
+    };
+
+    nameInput.onkeydown = validateForm;
+    nickNameInput.onkeydown = validateForm;
 
 
 })();

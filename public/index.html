@@ -5,25 +5,46 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <title>Chat</title>
 </head>
 <body>
-<div>
-    <div class="userName"></div>
-    <input type="text" class="nameInput" placeholder="Name">
-    <input type="button" value="Sign up" class="signUpBtn">
-</div>
-<div>
-    <ul class="messageHistory">
+<div class="container">
+    <div class="col-md-4">
+        <div class="well">
+            <h3>Online users</h3>
+            <ul class="list-group" id="users"></ul>
+        </div>
 
-    </ul>
+    </div>
+    <div class="col-md-8">
+        <div class="userName"></div>
+        <ul class="messageHistory">
+        </ul>
+        <div class="message area">
+            <textarea class="messageField form-control" name="messageField" id="" cols="30" rows="10"></textarea>
+            <input type="button" value="Send" class="sendMessageBtn btn btn-primary">
+            <div class="userIsTyping"></div>
+        </div>
+    </div>
+
+    <div id="myModal" class="modalWindow">
+        <div class="modal-content">
+            <div class="validationField"></div>
+            <label for="nameInput">Name</label>
+            <input type="text" class="nameInput" id="nameInput" placeholder="Name">
+            <label for="nickNameInput">Nick</label>
+            <input type="text" class="nickNameInput" id="nickNameInput"placeholder="Nickname">
+            <input type="button" value="Sign up" class="signUpBtn btn btn-primary disabled">
+        </div>
+    </div>
 </div>
 
-<div class="message area">
-    <textarea class="messageField" name="messageField" id="" cols="30" rows="10"></textarea>
-    <input type="button" value="Send" class="sendMessageBtn ">
-    <div class="userIsTyping"></div>
-</div>
 <script src="main.js"></script>
 </body>
 </html>
+
+
+
+
